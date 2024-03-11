@@ -29,5 +29,5 @@ jobs:
         run: zig build
 
       - name: Test
-        run: zig build
+        run: zig build test
 
