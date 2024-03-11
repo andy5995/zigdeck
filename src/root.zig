@@ -1,15 +1,15 @@
 const std = @import("std");
 
-const Card = struct {
-    suit: Suit,
-    value: u4,
-};
-
 const Suit = enum {
     Clubs,
     Diamonds,
     Hearts,
     Spades,
+};
+
+const Card = struct {
+    suit: Suit,
+    value: u4,
 };
 
 const Deck = struct {
@@ -19,9 +19,10 @@ const Deck = struct {
     pub fn init() Deck {
         var deck: Deck = .{ .cards = undefined, .top = 0 };
         var i: usize = 0;
-        for (Suit) |suit| {
+        // inline for (std.meta.fields(Suit)) |suit| {
+        for (0..3) |suit| {
             for (0..13) |value| {
-                deck.cards[i] = Card{ .suit = suit, .value = value + 1 };
+                deck.cards[i] = Card{ .suit = @enumFromInt(suit), .value = @as(u4, @intCast(value)) + 1 };
                 i += 1;
             }
         }
@@ -29,9 +30,12 @@ const Deck = struct {
     }
 
     pub fn shuffle(deck: *Deck) void {
-        var rng = std.rand.DefaultPrng.seed(@intCast(u64, std.time.milliTimestamp()));
-        for (deck.cards.enumerate()) |item| {
-            const i = item.index;
+        // This should be moved out of the library; no need
+        // to seed every time a deck is shuffled. How to pass rng from
+        // from another function?
+        var rng = std.rand.DefaultPrng.init(1);
+        for (deck.cards, 0..) |_, item| {
+            const i = deck.cards[item];
             const j = rng.random().int(usize) % deck.cards.len;
             const temp = deck.cards[i];
             deck.cards[i] = deck.cards[j];
