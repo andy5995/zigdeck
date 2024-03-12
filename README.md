@@ -2,4 +2,9 @@
 
 # zigdeck
 
-A non-functioning library that shuffles a deck of cards and deals them out
+A library that creates and shuffles a deck of cards from which you can draw
+
+The code builds but it's not yet complete.
+
+Tested with the the development version of [zig](https://ziglang.org/) (may
+not build with the last release).
