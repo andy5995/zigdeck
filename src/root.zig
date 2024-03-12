@@ -1,18 +1,18 @@
 const std = @import("std");
 
-const Suit = enum {
+pub const Suit = enum {
     Clubs,
     Diamonds,
     Hearts,
     Spades,
 };
 
-const Card = struct {
+pub const Card = struct {
     suit: Suit,
     value: u4,
 };
 
-const Deck = struct {
+pub const Deck = struct {
     cards: [52]Card,
     top: usize,
 
