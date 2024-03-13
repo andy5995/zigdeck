@@ -4,8 +4,6 @@
 
 A library that creates and shuffles a deck of cards from which you can draw
 
-The code builds but it's not yet complete.
-
 Tested with the the development version of [zig](https://ziglang.org/) (may
 not build with the last release).
 
@@ -23,8 +21,12 @@ not build with the last release).
     // Seed the random number generator
     var rng = std.rand.DefaultPrng.init(@as(u64, @intCast(std.time.milliTimestamp())));
 
+    // Shuffle
     Deck.shuffle(&deck, &rng.random());
+
+    // Draw one card
     const card = Deck.getTopCard(&deck) orelse return;
+
     try std.testing.expectEqual(Suit.Clubs, card.suit);
     try std.testing.expectEqual(Face.Queen, card.face);
 
