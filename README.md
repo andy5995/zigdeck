@@ -30,3 +30,5 @@ not build with the last release).
 
     std.debug.print("Top card: Suit = {}, Value = {}\n", .{ card.suit, card.face });
 ```
+
+This library is used by [zigpokerhands](https://github.com/andy5995/zigpokerhands).
