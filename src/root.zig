@@ -35,9 +35,9 @@ pub const Deck = struct {
     pub fn init() Deck {
         var deck: Deck = .{ .cards = undefined, .top = 0 };
         var i: usize = 0;
-        inline for (std.meta.fields(Suit), 0..) |_, suit| {
-            inline for (std.meta.fields(Face), 1..) |_, face| {
-                deck.cards[i] = Card{ .suit = @enumFromInt(suit), .face = @enumFromInt(face) };
+        inline for (@typeInfo(Suit).Enum.fields) |suit| {
+            inline for (@typeInfo(Face).Enum.fields) |face| {
+                deck.cards[i] = Card{ .suit = @enumFromInt(suit.value), .face = @enumFromInt(face.value) };
                 i += 1;
             }
         }
