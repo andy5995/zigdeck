@@ -60,8 +60,8 @@ pub const Deck = struct {
     pub fn init() Deck {
         var deck: Deck = .{ .cards = undefined, .top = 0 };
         var i: usize = 0;
-        inline for (@typeInfo(Suit).Enum.fields) |suit| {
-            inline for (@typeInfo(Face).Enum.fields) |face| {
+        inline for (@typeInfo(Suit).@"enum".fields) |suit| {
+            inline for (@typeInfo(Face).@"enum".fields) |face| {
                 deck.cards[i] = Card{ .suit = @enumFromInt(suit.value), .face = @enumFromInt(face.value) };
                 i += 1;
             }
@@ -69,7 +69,7 @@ pub const Deck = struct {
         return deck;
     }
 
-    pub fn shuffle(deck: *Deck, rng: *const std.rand.Random) void {
+    pub fn shuffle(deck: *Deck, rng: *const std.Random) void {
         for (deck.cards, 0..) |_, item| {
             const i = item;
             const j = rng.int(usize) % deck.cards.len;
@@ -88,7 +88,7 @@ pub const Deck = struct {
 };
 
 test "Deck operations" {
-    var deck = Deck.init();
+    var deck: Deck = .init();
     try std.testing.expectEqual(Suit.Clubs, deck.cards[0].suit);
     try std.testing.expectEqual(Face.Ace, deck.cards[0].face);
     try std.testing.expectEqual(Suit.Clubs, deck.cards[1].suit);
@@ -100,10 +100,10 @@ test "Deck operations" {
     try std.testing.expectEqual(Suit.Spades, deck.cards[48].suit);
     try std.testing.expectEqual(Face.King, deck.cards[51].face);
 
-    // var rng = std.rand.DefaultPrng.init(@as(u64, @intCast(std.time.milliTimestamp())));
-    var rng = std.rand.DefaultPrng.init(1);
-    Deck.shuffle(&deck, &rng.random());
-    const card = Deck.getTopCard(&deck) orelse return;
+    // var rng: std.Random.DefaultPrng = .init(@as(u64, @intCast(std.time.milliTimestamp())));
+    var rng: std.Random.DefaultPrng = .init(1);
+    deck.shuffle(&rng.random());
+    const card = deck.getTopCard() orelse return;
     try std.testing.expectEqual(Suit.Clubs, card.suit);
     try std.testing.expectEqual(Face.Queen, card.face);
     std.debug.print("Top card: Suit = {}, Value = {}\n", .{ card.suit, card.face });
